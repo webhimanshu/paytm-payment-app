@@ -1,1 +1,1 @@
-This Repo consist mernstack project setup
+Mern stack Project setup

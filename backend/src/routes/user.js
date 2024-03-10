@@ -3,6 +3,7 @@ const router = express.Router();
 const zod = require('zod');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
+const auth = require('../middlewares/auth')
 
 //Zod input validations
 const userSchema = zod.object({
@@ -10,6 +11,12 @@ const userSchema = zod.object({
     password: zod.string().min(5, { message: "Must be 5 or more characters long" }).nonempty(),
     firstName: zod.string().nonempty(),
     lastName: zod.string().nonempty()
+});
+
+const updateBodySchema = zod.object({
+    password: zod.string().min(5, { message: "Must be 5 or more characters long" }),
+    firstName: zod.string(),
+    lastName: zod.string()
 });
 
 router.post('/signup', async (req, resp) => {
@@ -41,6 +48,56 @@ router.post('/signup', async (req, resp) => {
         token: token
     })
 });
+
+router.put('/', auth, async (req, resp) => {
+    const { password, firstName, lastName } = req.body;
+    const { success } = updateBodySchema.safeParse(req.body);
+
+    if (!success) {
+        res.status(411).json({
+            message: "Error while updating information"
+        })
+    }
+
+    try {
+        await User.updateOne({ _id: req.userId }, { $set: { password, firstName, lastName } });
+        resp.status(200).resp.json({
+            message: "Updated successfully"
+        })
+
+    } catch (error) {
+        console.log("🚀 ~ router.put ~ error:", error);
+        resp.status(500).json({
+            message: "Error while updating information"
+        });
+    }
+});
+
+router.get('/', async (req, resp) => {
+    const filter = req.query.filter;
+    try {
+        const users = await User.find({
+            $or: [{
+                firstName: {
+                    "$regex": filter
+                }
+            }, {
+                lastName: {
+                    "$regex": filter
+                }
+            }]
+        }).select('-password');;
+
+
+        resp.status(200).json(users);
+
+    } catch (error) {
+        console.log("🚀 ~ router.put ~ error:", error);
+        resp.status(500).json({
+            message: "Error while searching users"
+        });
+    }
+})
 
 module.exports = router;
 

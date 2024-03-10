@@ -3,6 +3,7 @@ const router = express.Router();
 const zod = require('zod');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
+const Account = require('../models/account.model');
 const auth = require('../middlewares/auth')
 
 //Zod input validations
@@ -40,6 +41,12 @@ router.post('/signup', async (req, resp) => {
     }
 
     const user = await User.create(req.body);
+   
+    //Give user some money in their account
+    await Account.create({ 
+        userId: user._id,
+        balance: 1 + Math.random() * 10000
+    })
 
     const token = jwt.sign({ id: user._id, email: user.username }, process.env.ACCESS_TOKEN_SECRET);
 
@@ -73,7 +80,7 @@ router.put('/', auth, async (req, resp) => {
     }
 });
 
-router.get('/', async (req, resp) => {
+router.get('/bulk', async (req, resp) => {
     const filter = req.query.filter;
     try {
         const users = await User.find({

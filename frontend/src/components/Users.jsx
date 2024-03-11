@@ -1,29 +1,27 @@
 import { useState } from "react"
-import { Button } from "./Button"
+import  Button  from "./Button.jsx"
+import { useNavigate } from "react-router-dom";
 
-export const Users = () => {
+export const Users = ({inputValue , setInputValue , users}) => {
+    
     // Replace with backend call
-    const [users, setUsers] = useState([{
-        firstName: "Harkirat",
-        lastName: "Singh",
-        _id: 1
-    }]);
-
+    
     return <>
         <div className="font-bold mt-6 text-lg">
             Users
         </div>
         <div className="my-2">
-            <input type="text" placeholder="Search users..." className="w-full px-2 py-1 border rounded border-slate-200"></input>
+            <input type="text" value={inputValue} onChange={(e)=>setInputValue(e.target.value)} placeholder="Search users..." className="w-full px-2 py-1 border rounded border-slate-200"/>
         </div>
         <div>
-            {users.map(user => <User user={user} />)}
+            {users?.map(user => <User user={user} key={user._id} id={user._id}/>)}
         </div>
     </>
 }
 
-function User({user}) {
-    return <div className="flex justify-between">
+function User({user , id}) {
+    const navigate = useNavigate();
+    return <div className="flex justify-between mb-1.5">
         <div className="flex">
             <div className="rounded-full h-12 w-12 bg-slate-200 flex justify-center mt-1 mr-2">
                 <div className="flex flex-col justify-center h-full text-xl">
@@ -38,7 +36,7 @@ function User({user}) {
         </div>
 
         <div className="flex flex-col justify-center h-ful">
-            <Button label={"Send Money"} />
+            <Button onClick={()=>navigate('/send?id='+id+'&firstName='+user?.firstName+'&lastName='+user?.lastName)}label={"Send Money"} />
         </div>
     </div>
 }

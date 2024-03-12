@@ -8,11 +8,13 @@ function auth(req, resp, next) {
     }
     const token = authHeader.split(' ')[1];
 
+
     try {
 
         const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
         req.userId = decode.id;
         next();
+       
 
     } catch (error) {
         console.log("🚀 ~ auth ~ error:", error)

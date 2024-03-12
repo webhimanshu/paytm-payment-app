@@ -10,9 +10,6 @@ export default defineConfig({
       '/api/v1': {
         target: 'https://paytm-payment-app-api.vercel.app',
         changeOrigin: true,
-        configure: (proxy, options) => {
-          // proxy will be an instance of 'http-proxy'
-        },
       },
     },
   },

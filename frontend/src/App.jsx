@@ -4,6 +4,7 @@ import Signup from './pages/Signup.jsx';
 import Signin from './pages/Signin.jsx';
 import SendMoney from './pages/SendMoney.jsx';
 import Dashboard from './pages/Dashboard.jsx';
+import Welcome from './pages/Welcome.jsx';
 import Protected from './components/Protected.jsx';
 function App() {
   const auth = localStorage.getItem('token');
@@ -11,6 +12,7 @@ function App() {
     <>
        <BrowserRouter>
         <Routes>
+        <Route path="/" element={<Welcome />} />
           <Route element={<Protected/>}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/send" element={<SendMoney />} />

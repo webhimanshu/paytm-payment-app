@@ -15,16 +15,16 @@ export default defineConfig({
       },
     },
   },
-  build: {
-    proxy: {
-      "/api/v1": {
-        target: "'https://paytm-payment-app-api.vercel.app", 
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace("/api/v1", ""),
-      }
-    }
-  }
+  // build: {
+  //   proxy: {
+  //     "/api/v1": {
+  //       target: "'https://paytm-payment-app-api.vercel.app", 
+  //       changeOrigin: true,
+  //       secure: false,
+  //       rewrite: (path) => path.replace("/api/v1", ""),
+  //     }
+  //   }
+  // }
 })
 
 

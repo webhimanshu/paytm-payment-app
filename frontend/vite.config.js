@@ -7,36 +7,15 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/api/v1": {
-        target: "'https://paytm-payment-app-api.vercel.app",
+      '/api/v1': {
+        target: 'https://paytm-payment-app-api.vercel.app',
         changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace("/api/v1", ""),
+        configure: (proxy, options) => {
+          // proxy will be an instance of 'http-proxy'
+        },
       },
     },
   },
-  // build: {
-  //   proxy: {
-  //     "/api/v1": {
-  //       target: "'https://paytm-payment-app-api.vercel.app", 
-  //       changeOrigin: true,
-  //       secure: false,
-  //       rewrite: (path) => path.replace("/api/v1", ""),
-  //     }
-  //   }
-  // }
 })
 
 
-// server: {
-//   proxy: {
-//     '/api/v1': {
-//       target: 'https://paytm-payment-app-api.vercel.app',
-//       changeOrigin: true,
-//       configure: (proxy, options) => {
-//         // proxy will be an instance of 'http-proxy'
-//       },
-//     },
-//   },
-  
-// },

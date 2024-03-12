@@ -14,6 +14,9 @@ app.use(express.urlencoded({ extended: true, limit: '16kb' }));// when we pass d
 app.use(express.static('public'));// sometime we want to store pdf and images on our server
 app.use(cookieParser());
 
+app.get('/' , (req, resp)=>{
+  resp.json({message  :'Hello from Server'})
+})
 app.use('/api/v1', mainRouter);
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/account', accountRouter);

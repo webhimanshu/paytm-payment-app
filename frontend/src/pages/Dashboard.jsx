@@ -12,7 +12,7 @@ const Dashboard = () => {
 
   const getAllUsers = async () =>{
     try {
-      const resp = await  axios.get("http://localhost:3000/api/v1/user/bulk?filter="+inputValue ,{
+      const resp = await  axios.get("/api/v1/user/bulk?filter="+inputValue ,{
         headers :{
           'Authorization'  : localStorage.getItem('token')
         }
@@ -43,7 +43,7 @@ const Dashboard = () => {
 
   const getUserBalance = async() =>{
     try {
-      const resp = await axios.get('http://localhost:3000/api/v1/account/balance',{
+      const resp = await axios.get('/api/v1/account/balance',{
         headers :{
           'Authorization' :localStorage.getItem('token'),
         }

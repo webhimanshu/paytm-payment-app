@@ -7,7 +7,7 @@ const Navbar = () => {
     const navigate = useNavigate();
     const getUserDetails = async ()=>{
         try {
-            const response = await axios.get("http://localhost:3000/api/v1/user/detail" ,{headers:{
+            const response = await axios.get("/api/v1/user/detail" ,{headers:{
                 "Authorization" :localStorage.getItem('token')
             }});
             const data = response.data;

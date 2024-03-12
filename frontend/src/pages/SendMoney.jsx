@@ -16,7 +16,7 @@ const SendMoney = () => {
 
     const handleSendMoney = async ()=>{
         try {
-            const resp =   await axios.post('http://localhost:3000/api/v1/account/transfer', {to:id,amount:amount}, {
+            const resp =   await axios.post('/api/v1/account/transfer', {to:id,amount:amount}, {
                 headers: {
                 'Content-Type': 'application/json',
                 'Authorization': localStorage.getItem('token'), 

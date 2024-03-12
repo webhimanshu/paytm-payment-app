@@ -30,7 +30,7 @@ const Signup = () => {
    const navigate = useNavigate();
   const onSubmit = async (data) => {
     try {
-      const response= await axios.post('http://localhost:3000/api/v1/user/signup', data);
+      const response= await axios.post('/api/v1/user/signup', data);
      const payload = response.data;
      console.log("🚀 ~ onSubmit ~ payload:", payload)
      localStorage.setItem('token', "Bearer " + payload.token);

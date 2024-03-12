@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 const SendMoney = () => {
     const [searchParams] = useSearchParams();
@@ -8,8 +9,9 @@ const SendMoney = () => {
     const id = searchParams.get('id');
     const firstName = searchParams.get('firstName');
     const lastName = searchParams.get('lastName');
-
-
+    const location = useLocation();
+    const navigate = useNavigate();
+    const cameFromDashboard = location.state?.fromDashboard;
 
 
     const handleSendMoney = async ()=>{
@@ -17,21 +19,40 @@ const SendMoney = () => {
             const resp =   await axios.post('http://localhost:3000/api/v1/account/transfer', {to:id,amount:amount}, {
                 headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+ localStorage.getItem('token'), 
+                'Authorization': localStorage.getItem('token'), 
                 }
               }
             )
             const data = resp.data;
-            console.log("🚀 ~ handleSendMoney ~ data:", data)
+            console.log("🚀 ~ handleSendMoney ~ data:", data);
+            navigate('/dashboard');
         } catch (error) {
-            console.log("🚀 ~ handleSendMoney ~ error:", error)
-            
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                console.log("Server responded with status code:", error.response.status);
+                console.log("Response data:", error.response.data);
+               
+            } else if (error.request) {
+                // The request was made but no response was received
+                console.log("No response received:", error.request);
+            } else {
+                // Something happened in setting up the request that triggered an error
+                console.log("Error:", error.message);
+            }
         }
 
     }
 
-  return (
-    <div className="flex justify-center h-screen bg-gray-100 overflow-hidden">
+
+    useEffect(()=>{
+        if(!cameFromDashboard){
+            navigate('/dashboard');
+           return;
+      }
+    },[cameFromDashboard])
+
+  return    (
+   cameFromDashboard &&  <div className="flex justify-center h-screen bg-gray-100 overflow-hidden">
     <div className="h-full flex flex-col justify-center">
         <div
             className="border h-min text-card-foreground max-w-md px-4 py-6 space-y-8 w-96 bg-white shadow-lg rounded-lg"
@@ -71,7 +92,8 @@ const SendMoney = () => {
     </div>
   </div>
 </div>
-  )
+
+  ) 
 }
 
 export default SendMoney

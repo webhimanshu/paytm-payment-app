@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 function auth(req, resp, next) {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith('Bearer')) {
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return resp.status(411).json({ message: "Authorization failed" })
     }
     const token = authHeader.split(' ')[1];

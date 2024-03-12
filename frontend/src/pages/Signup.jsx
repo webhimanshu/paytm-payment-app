@@ -13,7 +13,7 @@ const schema = yup
     firstName: yup.string().required(),
     lastName: yup.string().required(),
     username: yup.string().email().required(),
-    password: yup.string().required(),
+    password: yup.string().required().min(6),
   });
 
 
@@ -27,11 +27,28 @@ const Signup = () => {
     mode: "onChange",
   })
 
-   
+   const navigate = useNavigate();
   const onSubmit = async (data) => {
-     const response= await axios.post('http://localhost:3000/api/v1/user/signup', data);
+    try {
+      const response= await axios.post('http://localhost:3000/api/v1/user/signup', data);
      const payload = response.data;
+     console.log("🚀 ~ onSubmit ~ payload:", payload)
      localStorage.setItem('token', "Bearer " + payload.token);
+     navigate('/dashboard');
+    } catch (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        console.log("Server responded with status code:", error.response.status);
+        console.log("Response data:", error.response.data);
+    } else if (error.request) {
+        // The request was made but no response was received
+        console.log("No response received:", error.request);
+    } else {
+        // Something happened in setting up the request that triggered an error
+        console.log("Error:", error.message);
+    }
+    }
+     
    }
 
 

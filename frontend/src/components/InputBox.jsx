@@ -1,6 +1,7 @@
 
 const InputBox = ({label  , placeholder , onChange , name , register , errors}) => {
 
+
   return (
     <div>
     <div className="text-sm font-medium text-left my-2">
